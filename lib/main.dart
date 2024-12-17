@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungrybelt/app_state.dart';
+import 'package:hungrybelt/firebase_auth/auth_gate.dart';
 import 'package:hungrybelt/pages/splashscreen.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +38,7 @@ class MainApp extends StatelessWidget {
         highlightColor: Colors.transparent,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const AuthGate(),
     );
   }
 }

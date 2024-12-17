@@ -33,9 +33,10 @@ class _FavoritePageState extends State<FavoritePage> {
       final List<FoodPlace> foodPlaces = snapshot.docs.map((doc) {
         final data = doc.data();
         return FoodPlace(
+          id: doc.id,
           name: data['name'] as String? ?? '',
           location: data['location'] as String? ?? '',
-          rating: data['rating'] as int? ?? 0,
+          rating: data['rating'] as double? ?? 0,
           comments: [], // Assuming no comments for now, add handling if needed
           socialMedia: data['category'] as String? ?? '',
           filterCategory: data['filterCategory'] as String? ?? '',

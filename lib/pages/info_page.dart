@@ -1,22 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hungrybelt/models/food_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfoPage extends StatefulWidget {
-  final String foodPlaceName;
+  final FoodPlace foodPlace;
 
-  const InfoPage({super.key, required this.foodPlaceName});
+  const InfoPage({
+    super.key,
+    required this.foodPlace,
+  });
 
   @override
   State<InfoPage> createState() => _InfoPageState();
 }
 
 class _InfoPageState extends State<InfoPage> {
-  double userRating = 0;
-  double averageRating = 4.2;
+  num userRating = 0;
+  num averageRating = 4.2;
   bool isFavorite = false;
 
-  String foodPlaceName = '';
   String location = 'Loading...';
   String image = 'assets/images/default_image.png';
   String sns = 'No SNS available';
@@ -27,7 +31,6 @@ class _InfoPageState extends State<InfoPage> {
   @override
   void initState() {
     super.initState();
-    foodPlaceName = widget.foodPlaceName;
     _fetchFoodPlaceDetails();
   }
 
@@ -35,7 +38,7 @@ class _InfoPageState extends State<InfoPage> {
     try {
       final snapshot = await FirebaseFirestore.instance
           .collection('foodPlaces')
-          .where('name', isEqualTo: foodPlaceName)
+          .where('name', isEqualTo: widget.foodPlace.name)
           .get();
 
       if (snapshot.docs.isNotEmpty) {
@@ -46,8 +49,9 @@ class _InfoPageState extends State<InfoPage> {
           image = data['image'] ?? 'assets/images/default_image.png';
           sns = data['socialMedia'] ?? 'No SNS available';
           snsUrl = data['socialMedia'] ?? '';
-          averageRating = (data['rating']?.toDouble() ?? 4);
-          isFavorite = data['isFavorite'] ?? false;  // Fetch the current favorite status
+          averageRating = (data['rating'] as num? ?? 4);
+          isFavorite =
+              data['isFavorite'] ?? false; // Fetch the current favorite status
         });
       }
     } catch (e) {
@@ -58,8 +62,8 @@ class _InfoPageState extends State<InfoPage> {
   Future<void> _addComment(String comment) async {
     try {
       await FirebaseFirestore.instance.collection('comments').add({
-        'userID': 'User123', // Replace with actual user ID
-        'foodPlaceName': foodPlaceName,
+        'author': FirebaseAuth.instance.currentUser?.email, 
+        'foodPlaceName': widget.foodPlace.name,
         'comment': comment,
         'date': Timestamp.now(),
       });
@@ -73,7 +77,10 @@ class _InfoPageState extends State<InfoPage> {
   Future<void> _updateRating() async {
     try {
       double newAverageRating = (averageRating + userRating) / 2;
-      await FirebaseFirestore.instance.collection('foodPlaces').doc(foodPlaceName).update({
+      await FirebaseFirestore.instance
+          .collection('foodPlaces')
+          .doc(widget.foodPlace.id)
+          .update({
         'rating': newAverageRating,
       });
       setState(() {
@@ -97,12 +104,13 @@ class _InfoPageState extends State<InfoPage> {
     try {
       await FirebaseFirestore.instance
           .collection('foodPlaces')
-          .where('name', isEqualTo: foodPlaceName)
+          .where('name', isEqualTo: widget.foodPlace.name)
           .get()
           .then((snapshot) {
         if (snapshot.docs.isNotEmpty) {
           snapshot.docs.first.reference.update({
-            'isFavorite': isFavorite,  // Update the isFavorite field in Firestore
+            'isFavorite':
+                isFavorite, // Update the isFavorite field in Firestore
           });
         }
       });
@@ -113,6 +121,8 @@ class _InfoPageState extends State<InfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final String foodPlaceName = widget.foodPlace.name;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -219,7 +229,8 @@ class _InfoPageState extends State<InfoPage> {
                         },
                         child: Icon(
                           Icons.star,
-                          color: index < userRating ? Colors.yellow : Colors.grey,
+                          color:
+                              index < userRating ? Colors.yellow : Colors.grey,
                           size: 28,
                         ),
                       );
@@ -233,14 +244,16 @@ class _InfoPageState extends State<InfoPage> {
               Row(
                 children: [
                   const SizedBox(width: 8),
-                  Text("Mark as Favorite:", style: const TextStyle(fontSize: 16)),
+                  Text("Mark as Favorite:",
+                      style: const TextStyle(fontSize: 16)),
                   const SizedBox(width: 8),
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        isFavorite = !isFavorite;  // Toggle the favorite status
+                        isFavorite = !isFavorite; // Toggle the favorite status
                       });
-                      _updateFavoriteStatus(isFavorite);  // Update Firestore with the new status
+                      _updateFavoriteStatus(
+                          isFavorite); // Update Firestore with the new status
                     },
                     child: Icon(
                       isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -300,7 +313,8 @@ class _InfoPageState extends State<InfoPage> {
                       final commentData = doc.data() as Map<String, dynamic>;
                       return ListTile(
                         title: Text(commentData['comment'] ?? ''),
-                        subtitle: Text('By ${commentData['userID'] ?? 'Anonymous'}'),
+                        subtitle:
+                            Text('By ${commentData['author'] ?? 'Anoynmous'}'),
                         trailing: Text(
                           commentData['date'].toDate().toString().split(' ')[0],
                         ),

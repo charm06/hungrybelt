@@ -44,7 +44,7 @@ class ApplicationState extends ChangeNotifier {
                 if (commentData != null) {
                   comments.add(
                     Comment(
-                      userID: commentData['userID'] as String? ?? '',  // Default empty string if null
+                      author: commentData['author'] as String? ?? '',  // Default empty string if null
                       date: commentData['date'] as Timestamp? ?? Timestamp.now(),  // Default current timestamp if null
                       comment: commentData['comment'] as String? ?? '',  // Default empty string if null
                     ),
@@ -55,9 +55,10 @@ class ApplicationState extends ChangeNotifier {
 
             // Create the FoodPlace object with the converted comments
             _foodPlace.add(FoodPlace(
+              id: document.id,
               name: document.data()['name'] as String? ?? '',  // Default empty string if null
               location: document.data()['location'] as String? ?? '',  // Default empty string if null
-              rating: document.data()['rating'] as int? ?? 0,  // Default 0 if null
+              rating: document.data()['rating'] as num? ?? 0,  // Default 0 if null
               comments: comments,
               socialMedia: document.data()['category'] as String? ?? '',  // Default empty string if null
               filterCategory: document.data()['filterCategory'] as String? ?? '',  // Default empty string if null

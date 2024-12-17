@@ -1,3 +1,4 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungrybelt/pages/home_page.dart';
@@ -53,9 +54,9 @@ class AppRouter extends StatelessWidget {
                       width: 50.0,
                       height: 50.0,
                     )),
-               _buildCustomNavigationDestination(
+                _buildCustomNavigationDestination(
                     controller.selectedIndex.value,
-                    0,
+                    1,
                     Image.asset(
                       "assets/images/fave_nav_logo.png",
                       width: 50.0,
@@ -63,7 +64,7 @@ class AppRouter extends StatelessWidget {
                     )),
                 _buildCustomNavigationDestination(
                     controller.selectedIndex.value,
-                    0,
+                    2,
                     Image.asset(
                       "assets/images/wheel_nav_logo.png",
                       width: 50.0,
@@ -71,9 +72,17 @@ class AppRouter extends StatelessWidget {
                     )),
                 _buildCustomNavigationDestination(
                     controller.selectedIndex.value,
-                    0,
+                    3,
                     Image.asset(
                       "assets/images/space_nav_logo.png",
+                      width: 50.0,
+                      height: 50.0,
+                    )),
+                _buildCustomNavigationDestination(
+                    controller.selectedIndex.value,
+                    4,
+                    Image.asset(
+                      "assets/images/profile_logo.png",
                       width: 50.0,
                       height: 50.0,
                     )),
@@ -89,7 +98,7 @@ class AppRouter extends StatelessWidget {
       int currentIndex, int index, dynamic icon) {
     return NavigationDestination(
       icon: Container(
-        padding: EdgeInsets.zero,  // Remove any unnecessary padding
+        padding: EdgeInsets.zero, // Remove any unnecessary padding
         decoration: BoxDecoration(
           color: currentIndex == index
               ? Colors.white.withOpacity(0.2)
@@ -98,7 +107,7 @@ class AppRouter extends StatelessWidget {
         ),
         child: _buildIcon(icon, currentIndex == index),
       ),
-      label: '',  // Keep the label empty to remove text
+      label: '', // Keep the label empty to remove text
     );
   }
 
@@ -126,5 +135,6 @@ class AppRouterController extends GetxController {
     const FavoritePage(),
     const SpinWheelPage(),
     const SpacePage(),
+    const ProfileScreen()
   ];
 }

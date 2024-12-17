@@ -13,11 +13,13 @@ class FilterTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InfoPage(foodPlaceName: foodplace.name),
+            builder: (context) => InfoPage(
+              foodPlace: foodplace,
+            ),
           ),
         );
       },
