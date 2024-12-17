@@ -45,7 +45,7 @@ class FaveTile extends StatelessWidget {
           children: [
             const SizedBox(width: 10),
             Image.asset(
-              'assets/images/fave_heart.png',
+              'assets/images/uFavorite_icon.png',
               height: 40,
               width: 40,
             ),
