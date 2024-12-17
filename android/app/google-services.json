@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "621828999019",
+    "project_id": "hungrybelt-67484",
+    "storage_bucket": "hungrybelt-67484.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621828999019:android:eb434eb8270c8ff7236e2e",
+        "android_client_info": {
+          "package_name": "com.hUngrybelt.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsGVApW366xneNU7HJfLYwaZU0TM3l888"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
