@@ -56,8 +56,11 @@ class _InfoPageState extends State<InfoPage> {
 
   Future<void> _addComment(String comment) async {
     try {
+      // Replace with the actual user ID retrieved from your authentication system
+      String userID = 'User123';
+
       await FirebaseFirestore.instance.collection('comments').add({
-        'userID': 'User123', // Replace with actual user ID
+        'userID': userID,
         'foodPlaceName': foodPlaceName,
         'comment': comment,
         'date': Timestamp.now(),
@@ -66,6 +69,24 @@ class _InfoPageState extends State<InfoPage> {
       print("Comment added successfully!");
     } catch (e) {
       print("Error adding comment: $e");
+    }
+  }
+
+  Future<String> _fetchUserName(String userID) async {
+    try {
+      final userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('userID', isEqualTo: userID)
+          .get();
+
+      if (userSnapshot.docs.isNotEmpty) {
+        return userSnapshot.docs.first.data()['username'] ?? 'Unknown User';
+      } else {
+        return 'Unknown User';
+      }
+    } catch (e) {
+      print("Error fetching user details: $e");
+      return 'Unknown User';
     }
   }
 
@@ -170,68 +191,6 @@ class _InfoPageState extends State<InfoPage> {
               ),
               const SizedBox(height: 20),
 
-              // Location Display
-              Row(
-                children: [
-                  const Icon(Icons.location_pin, color: Colors.red),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(location, style: const TextStyle(fontSize: 16)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Rating Display
-              Row(
-                children: [
-                  const Icon(Icons.star_border, color: Colors.red),
-                  const SizedBox(width: 8),
-                  const Text("Add Rating:", style: TextStyle(fontSize: 16)),
-                  const SizedBox(width: 8),
-                  Row(
-                    children: List.generate(5, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            userRating = index + 1.0;
-                            _updateRating();
-                          });
-                        },
-                        child: Icon(
-                          Icons.star,
-                          color: index < userRating ? Colors.yellow : Colors.grey,
-                          size: 28,
-                        ),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // SNS Display
-              Row(
-                children: [
-                  const Icon(Icons.language, color: Colors.red),
-                  const SizedBox(width: 8),
-                  snsUrl.isNotEmpty
-                      ? GestureDetector(
-                          onTap: () => _launchURL(snsUrl),
-                          child: Text(
-                            sns,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        )
-                      : Text(sns, style: const TextStyle(fontSize: 16)),
-                ],
-              ),
-              const SizedBox(height: 20),
-
               // Comments Section
               const Text(
                 'Comments:',
@@ -246,8 +205,10 @@ class _InfoPageState extends State<InfoPage> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return const Text('Error loading comments');
+                      print('Error: ${snapshot.error}');
+                      return Text('Error: ${snapshot.error}');
                   }
+
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -256,12 +217,20 @@ class _InfoPageState extends State<InfoPage> {
                   return Column(
                     children: comments.map((doc) {
                       final commentData = doc.data() as Map<String, dynamic>;
-                      return ListTile(
-                        title: Text(commentData['comment'] ?? ''),
-                        subtitle: Text('By ${commentData['userID'] ?? 'Anonymous'}'),
-                        trailing: Text(
-                          commentData['date'].toDate().toString().split(' ')[0],
-                        ),
+
+                      return FutureBuilder<String>(
+                        future: _fetchUserName(commentData['userID']),
+                        builder: (context, userSnapshot) {
+                          String username = userSnapshot.data ?? 'Unknown User';
+
+                          return ListTile(
+                            title: Text(commentData['comment'] ?? ''),
+                            subtitle: Text('By $username'),
+                            trailing: Text(
+                              commentData['date'].toDate().toString().split(' ')[0],
+                            ),
+                          );
+                        },
                       );
                     }).toList(),
                   );
@@ -294,18 +263,6 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            isFavorite = !isFavorite;
-          });
-        },
-        backgroundColor: Colors.red,
-        child: Icon(
-          isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: Colors.white,
         ),
       ),
     );
