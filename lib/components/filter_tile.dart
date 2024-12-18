@@ -46,21 +46,23 @@ class FilterTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  foodplace.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    foodplace.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  foodplace.location,
-                ),
-              ],
+                  const SizedBox(height: 3),
+                  Text(
+                    foodplace.location,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
