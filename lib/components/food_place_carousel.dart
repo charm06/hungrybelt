@@ -41,7 +41,7 @@ class _FoodPlaceCarouselState extends State<FoodPlaceCarousel> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(6.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,26 +64,31 @@ class _FoodPlaceCarouselState extends State<FoodPlaceCarousel> {
                           const SizedBox(
                             width: 16,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                foodPlace.name,
-                                style: const TextStyle(
-                                  color: Color(0xFFEEEDED),
-                                  fontSize: 16, // Reduce font size
-                                  fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    foodPlace.name,
+                                    style: const TextStyle(
+                                      color: Color(0xFFEEEDED),
+                                      fontSize: 16, // Reduce font size
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    softWrap: true,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                foodPlace.location,
-                                style: const TextStyle(
-                                  color: Color(0xFFEEEDED),
-                                  fontSize: 14, // Reduce font size
+                                Text(
+                                  foodPlace.location,
+                                  style: const TextStyle(
+                                    color: Color(0xFFEEEDED),
+                                    fontSize: 14, // Reduce font size
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -93,7 +98,7 @@ class _FoodPlaceCarouselState extends State<FoodPlaceCarousel> {
               );
             }).toList(),
             options: CarouselOptions(
-              height: 200.0, // Reduce overall height of the carousel
+              height: 170.0, // Reduce overall height of the carousel
               enlargeCenterPage: true, // Option to highlight the center card
               enableInfiniteScroll: true,
               autoPlay: true,
