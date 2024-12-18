@@ -271,17 +271,19 @@ class _InfoPageState extends State<InfoPage> {
                   const Icon(Icons.language, color: Colors.red),
                   const SizedBox(width: 8),
                   snsUrl.isNotEmpty
-                      ? GestureDetector(
-                          onTap: () => _launchURL(snsUrl),
-                          child: Text(
-                            sns,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline,
+                      ? Expanded(
+                        child: GestureDetector(
+                            onTap: () => _launchURL(snsUrl),
+                            child: Text(
+                              sns,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
-                        )
+                      )
                       : Text(sns, style: const TextStyle(fontSize: 16)),
                 ],
               ),
