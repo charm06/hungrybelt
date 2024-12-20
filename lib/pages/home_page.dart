@@ -35,19 +35,6 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Top Recommendations Section
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    "Top Recommendations",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
@@ -63,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       side: const BorderSide(color: Colors.grey),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -90,15 +77,29 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 25),
-
-                // Placeholder for Top Recommendations Content
-                // Food Place Carousel Section
-                FoodPlaceCarousel(
-                  foodPlaces: appState.foodPlaces,
+                const SizedBox(
+                  height: 20,
                 ),
-
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    "Top Recommendations",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ),
+                // Food Place Carousel Section
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: FoodPlaceCarousel(
+                    foodPlaces: appState.foodPlaces,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
                 // Filter Section
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
