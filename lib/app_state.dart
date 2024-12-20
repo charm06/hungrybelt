@@ -13,8 +13,8 @@ class ApplicationState extends ChangeNotifier {
   }
 
   StreamSubscription<QuerySnapshot>? _foodPlaceSubscription;
-  List<FoodPlace> _foodPlace = [];
-  List<FoodPlace> get foodPlace => _foodPlace;
+  List<FoodPlace> _foodPlaces = [];
+  List<FoodPlace> get foodPlaces => _foodPlaces;
 
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
@@ -30,7 +30,7 @@ class ApplicationState extends ChangeNotifier {
             .orderBy('name')
             .snapshots()
             .listen((snapshot) async {
-          _foodPlace = [];
+          _foodPlaces = [];
           for (final document in snapshot.docs) {
             // Fetch the comments and convert them to Comment objects
             List<Comment> comments = [];
@@ -54,7 +54,7 @@ class ApplicationState extends ChangeNotifier {
             }
 
             // Create the FoodPlace object with the converted comments
-            _foodPlace.add(FoodPlace(
+            _foodPlaces.add(FoodPlace(
               id: document.id,
               name: document.data()['name'] as String? ?? '',  // Default empty string if null
               location: document.data()['location'] as String? ?? '',  // Default empty string if null
@@ -70,7 +70,7 @@ class ApplicationState extends ChangeNotifier {
         });
       } else {
         _loggedIn = false;
-        _foodPlace = [];
+        _foodPlaces = [];
         _foodPlaceSubscription?.cancel();
       }
       notifyListeners();
