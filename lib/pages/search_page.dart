@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
           decoration: InputDecoration(
             hintText: 'Search for food places...',
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(
                 width: 1,
                 color: Colors.grey,
@@ -60,7 +60,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(
                 width: 1,
                 color: Colors.black,
@@ -81,6 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                 // Display suggestions as a list when typing
                 for (var foodPlace in _filteredFoodPlaces)
                   ListTile(
+                    key: ValueKey(foodPlace.id),
                     title: Text(foodPlace.name),
                     onTap: () {
                       Navigator.push(
