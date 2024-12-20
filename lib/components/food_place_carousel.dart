@@ -27,7 +27,6 @@ class _FoodPlaceCarouselState extends State<FoodPlaceCarousel> {
     return Column(
       children: [
         SizedBox(
-          height: 250, // Reduce the height of the carousel
           child: CarouselSlider(
             items: widget.foodPlaces.map((foodPlace) {
               return Builder(
@@ -102,6 +101,21 @@ class _FoodPlaceCarouselState extends State<FoodPlaceCarousel> {
                                         color: Color(0xFFEEEDED),
                                         fontSize: 14, // Reduce font size
                                       ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: List.generate(5, (index) {
+                                        return Icon(
+                                          Icons.star,
+                                          color:
+                                              index < foodPlace.rating.floor()
+                                                  ? Colors.yellow
+                                                  : Colors.white,
+                                          size: 20,
+                                        );
+                                      }),
                                     ),
                                   ],
                                 ),
